@@ -12,6 +12,7 @@ namespace lua_csharp
         public string FunctionName { get; }
         public string FunctionDescription { get; }
         public string[] FunctionParametres { get; } = null;
+
         public LuaFunctionAttribute(string functionName, string functionDescription)
         {
             this.FunctionName = functionName;
