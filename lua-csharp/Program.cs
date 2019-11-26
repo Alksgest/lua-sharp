@@ -1,4 +1,4 @@
-﻿using MainNamespace.LuaWrapper;
+﻿using MainNamespace.LuaUtil;
 
 namespace MainNamespace
 {
@@ -12,5 +12,4 @@ namespace MainNamespace
             }
         }
     }
-
 }

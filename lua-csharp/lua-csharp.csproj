@@ -51,14 +51,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LuaFunctionAttribute.cs" />
-    <Compile Include="LuaStarter.cs" />
+    <Compile Include="LuaUtil\FunctionRegistrator.cs" />
+    <Compile Include="LuaUtil\LuaFunctionAttribute.cs" />
+    <Compile Include="LuaUtil\LuaStarter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="lua-scripts\script1.lua">
+    <None Include="lua\main.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="lua\f1\myMath.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
