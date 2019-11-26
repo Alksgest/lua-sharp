@@ -1,6 +1,14 @@
 {
     "Lua.diagnostics.globals": [
-        "PrintToConsole"
+        "PrintToConsole",
+        "GetLogicalDrives",
+        "GetDirectories",
+        "GetFiles",
+        "HandleKeyPress",
+        "PrintLuaTable",
+        "CleareConsole"
     ],
-    "lua.format.singleQuote": true
+    "Lua.diagnostics.disable": [
+        "trailing-space"
+    ]
 }

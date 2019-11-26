@@ -8,7 +8,7 @@ namespace MainNamespace
         {
             using (var starter = new LuaStarter())
             {
-                starter.Run();
+                starter.RunScripts();
             }
         }
     }
