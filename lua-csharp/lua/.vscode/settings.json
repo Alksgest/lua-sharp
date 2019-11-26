@@ -1,0 +1,6 @@
+{
+    "Lua.diagnostics.globals": [
+        "PrintToConsole"
+    ],
+    "lua.format.singleQuote": true
+}
