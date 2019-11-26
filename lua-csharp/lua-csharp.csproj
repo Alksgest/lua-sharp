@@ -52,7 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LuaFunctionAttribute.cs" />
-    <Compile Include="LuaFunctionsDescriptor.cs" />
     <Compile Include="LuaStarter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lua_csharp
+namespace MainNamespace.LuaWrapper
 {
     class LuaFunctionAttribute : Attribute
     {

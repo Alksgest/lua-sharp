@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using NLua;
 
-namespace lua_csharp
+namespace MainNamespace.LuaWrapper
 {
     class LuaStarter : IDisposable
     {
-        private readonly Lua LuaVM;
+        private readonly Lua LuaVM = new Lua();
         private bool _isRuning;
 
         private readonly string _scriptPath = "lua-scripts";
+        private readonly FunctionRegistrator registrator = new FunctionRegistrator();
 
         public LuaStarter()
         {
-            this.LuaVM = new Lua();
-            RegisterFunctions();
+            registrator.RegisterFunctions(this, this.LuaVM);
         }
 
         public void Run()
@@ -49,12 +48,6 @@ namespace lua_csharp
             this._isRuning = false;
         }
 
-        [LuaFunction("PrintSmth", "PrintSmth.", new string[] { "value" } )]
-        public void PrintSmth(string value)
-        {
-            Console.WriteLine("PrintSmth is working. {0}", value);
-        }
-
         [LuaFunction("ExecuteScripts", "Execute scripts on path lua-scripts/*.lua")]
         public void ExecuteScripts()
         {
@@ -63,6 +56,12 @@ namespace lua_csharp
             {
                 object[] result = this.LuaVM.DoFile(file);
             }
+        }
+
+        [LuaFunction("PrintToConsole", "Print line to Console", new string[] { "line" })]
+        public void PrintToConsole(string line)
+        {
+            Console.WriteLine(line);
         }
 
         private string[] GetLuaScripts()
@@ -74,7 +73,7 @@ namespace lua_csharp
             return null;
         }
 
-        private bool disposedValue = false; // To detect redundant calls
+        private bool disposedValue = false;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -93,42 +92,7 @@ namespace lua_csharp
         {
             Dispose(true);
         }
-
-        private void RegisterFunctions()
-        {
-            if (this.LuaVM == null)
-                return;
-
-            Type type = this.GetType();
-
-            foreach (var mInfo in type.GetMethods())
-            {
-                foreach (var attr in Attribute.GetCustomAttributes(mInfo))
-                {
-                    if (attr.GetType() == typeof(LuaFunctionAttribute))
-                    {
-                        LuaFunctionAttribute func = (LuaFunctionAttribute)attr;
-
-                        string fName = func.FunctionName;
-                        string fDesck = func.FunctionDescription;
-                        string[] parametres = func.FunctionParametres;
-
-                        ParameterInfo[] pPrmInfo = mInfo.GetParameters();
-
-                        if (parametres != null && parametres.Length != pPrmInfo.Length)
-                        {
-                            Console.WriteLine("Function " + mInfo.Name + " (exported as " +
-                                fName + ") argument number mismatch. Declared " +
-                                parametres.Length + " but requires " +
-                                pPrmInfo.Length + ".");
-                            break;
-                        }
-
-                        this.LuaVM.RegisterFunction(fName, this, mInfo);
-                    }
-                }
-            }
-        }
     }
+
 }
 

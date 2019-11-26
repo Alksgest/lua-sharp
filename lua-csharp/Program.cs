@@ -1,24 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using MainNamespace.LuaWrapper;
 
-namespace lua_csharp
+namespace MainNamespace
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Thread luaThread;
-            using (LuaStarter starter = new LuaStarter())
+            using (var starter = new LuaStarter())
             {
-                luaThread = new Thread(starter.Run);
-
-                luaThread.Start();
-                luaThread.Join();
+                starter.Run();
             }
         }
     }
