@@ -65,7 +65,7 @@
     <None Include="lua\main.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="lua\menu.lua">
+    <None Include="lua\filesExplorer.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="lua\stringUtil.lua">

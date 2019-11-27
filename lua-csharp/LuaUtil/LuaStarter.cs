@@ -97,8 +97,15 @@ namespace MainNamespace.LuaUtil
         [LuaFunction("GetFiles", "Get files form dir", new string[] { "path" })]
         public string GetFiles(string path)
         {
-            if (Directory.Exists(path))
-                return String.Join(",", Directory.GetFiles(path));
+            try
+            {
+                if (Directory.Exists(path))
+                    return String.Join(",", Directory.GetFiles(path));
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                PrintExceptionWithDelay(e);
+            }
             return "";
         }
 
@@ -108,8 +115,16 @@ namespace MainNamespace.LuaUtil
         [LuaFunction("GetDirectories", "GetDirectories", new string[] { "path" })]
         public string GetDirectories(string path)
         {
-            if (Directory.Exists(path))
-                return String.Join(",", Directory.GetDirectories(path));
+            try
+            {
+                if (Directory.Exists(path))
+                    return String.Join(",", Directory.GetDirectories(path));
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                PrintExceptionWithDelay(e);
+            }
+
             return "";
         }
 
@@ -124,9 +139,7 @@ namespace MainNamespace.LuaUtil
                 }
                 catch(Win32Exception e)
                 {
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine("Press any key to continue.");
-                    Console.ReadKey();
+                    PrintExceptionWithDelay(e);
                 }
             }
         }
@@ -174,6 +187,17 @@ namespace MainNamespace.LuaUtil
             }
         }
 
+        private void PrintExceptionWithDelay(Exception e)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\n-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+            Console.WriteLine(e.Message);
+            Console.WriteLine("Press any key to continue.   ");
+            Console.WriteLine("\n-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+            Console.ResetColor();
+            Console.ReadKey();
+        }
+
         [LuaFunction("CleareConsole", "Cleare console")]    
         public void CleareConsole()
         {
@@ -198,4 +222,3 @@ namespace MainNamespace.LuaUtil
         }
     }
 }
-

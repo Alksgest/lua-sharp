@@ -1,7 +1,7 @@
-﻿local menu = require('menu')
+﻿local filesExplorer = require('filesExplorer')
 
 local function main()  
-    menu:start();
+    filesExplorer:start();
 end
 
 main();

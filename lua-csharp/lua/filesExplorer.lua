@@ -9,12 +9,12 @@ local consoleKey = {
 
 local function copy(obj)
     if type(obj) ~= 'table' then return obj end
-    local res = {}
+    local res = {};
     for k, v in pairs(obj) do res[copy(k)] = copy(v) end
-    return res
+    return res;
 end
 
-local function mergeArrays(arr1, arr2) --  first folders, second files
+local function mergeArrays(arr1, arr2)--  first folders, second files
     local resArray = {};
     
     for i = 1, #arr1 do
@@ -27,19 +27,19 @@ local function mergeArrays(arr1, arr2) --  first folders, second files
     return resArray;
 end
 
-local menu = {}
+local filesExplorer = {}
 
-menu.logicDrives = filesWorker.getLogicalDrives();
-menu.currentSample = filesWorker.getLogicalDrives();
-menu.currentPath = '';
-menu.currentPosisition = 0;
+filesExplorer.logicDrives = filesWorker.getLogicalDrives();
+filesExplorer.currentSample = filesWorker.getLogicalDrives();
+filesExplorer.currentPath = '';
+filesExplorer.currentPosisition = 0;
 
-function menu.createMenu()
-    local folders = filesWorker.getDirectories(menu.logicDrives[1])
-    PrintLuaTable(menu.logicDrives);
+function filesExplorer.createMenu()
+    local folders = filesWorker.getDirectories(filesExplorer.logicDrives[1])
+    PrintLuaTable(filesExplorer.logicDrives);
 end
 
-function menu.handleKeyUp(self)
+function filesExplorer.handleKeyUp(self)
     if (self.currentPosisition - 1 >= 1) then
         self.currentPosisition = self.currentPosisition - 1;
     else
@@ -47,7 +47,7 @@ function menu.handleKeyUp(self)
     end
 end
 
-function menu.handleKeyDown(self)
+function filesExplorer.handleKeyDown(self)
     if (self.currentPosisition + 1 <= #self.currentSample) then
         self.currentPosisition = self.currentPosisition + 1;
     else
@@ -55,7 +55,7 @@ function menu.handleKeyDown(self)
     end
 end
 
-function menu.handleKeyEnter(self)
+function filesExplorer.handleKeyEnter(self)
     if (CheckIsPathPresentFile(self.currentSample[self.currentPosisition])) then
         local file = self.currentSample[self.currentPosisition];
         RunFile(file);
@@ -71,10 +71,10 @@ function menu.handleKeyEnter(self)
     end
 end
 
-function menu.handleKeyBackspace(self)
+function filesExplorer.handleKeyBackspace(self)
     if (self.currentPath ~= '' and #self.currentPath > 4) then
         local parentFolder = GetParentFolder(self.currentPath);
-
+        
         local folders = filesWorker.getDirectories(parentFolder);
         local filesInFolder = filesWorker.getFiles(parentFolder);
         
@@ -87,7 +87,7 @@ function menu.handleKeyBackspace(self)
     end
 end
 
-function menu.start(self)
+function filesExplorer.start(self)
     while (true) do
         CleareConsole();
         PrintToConsole(self.currentPosisition);
@@ -107,4 +107,4 @@ function menu.start(self)
     end
 end
 
-return menu;
+return filesExplorer;
