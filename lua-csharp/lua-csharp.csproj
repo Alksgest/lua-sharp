@@ -68,9 +68,6 @@
     <None Include="lua\menu.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="lua\myMath.lua">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="lua\stringUtil.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

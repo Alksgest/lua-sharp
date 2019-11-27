@@ -3,6 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using NLua;
+using System.Text;
+using System.ComponentModel;
 
 namespace MainNamespace.LuaUtil
 {
@@ -24,6 +26,7 @@ namespace MainNamespace.LuaUtil
             RegisterModules();
 
             LuaVM.UseTraceback = true;
+            LuaVM.State.Encoding = Encoding.UTF8;
         }
 
         public void RunLoop()
@@ -84,7 +87,8 @@ namespace MainNamespace.LuaUtil
         [LuaFunction("ExecuteScripts", "Execute scripts on path lua-scripts/main.lua")]
         public void ExecuteScripts()
         {
-            this.LuaVM.DoFile(_scriptFolder + "\\" + _mainScript);
+            //this.LuaVM.DoFile(_scriptFolder + "\\" + _mainScript);
+            this.LuaVM.DoString(File.ReadAllText(_scriptFolder + "\\" + _mainScript, Encoding.UTF8));
         }
 
         [LuaFunction("PrintToConsole", "Print line to Console", new string[] { "line" })]
@@ -109,6 +113,34 @@ namespace MainNamespace.LuaUtil
             return "";
         }
 
+        [LuaFunction("RunFile", "Run file", new string[] { "filePath" })]
+        public void RunFile(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(filePath);
+                }
+                catch(Win32Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine("Press any key to continue.");
+                    Console.ReadKey();
+                }
+            }
+        }
+
+        [LuaFunction("CheckIsPathPresentFile", "CheckIsPathPresentFile", new string[] { "filePath" })]
+        public bool CheckIsPathPresentFile(string filePath) => File.Exists(filePath);
+
+        [LuaFunction("GetParentFolder", "GetParentFolder", new string[] { "path" })]
+        public string GetParentFolder(string path)
+        {
+            var r = Directory.GetParent(path).FullName;
+            return r;
+        }
+
         [LuaFunction("HandleKeyPress", "Handle pressed key.")]
         public int HandleKeyPress()
         {
@@ -120,18 +152,18 @@ namespace MainNamespace.LuaUtil
                     break;
                 case ConsoleKey.DownArrow:
                     Console.WriteLine("Down arrow");
-                    break;
+                    break;  
             }
             return (int)ch;
         }
 
-        [LuaFunction("PrintLuaTable", "PrintLuaTable", new string[] { "table" })]
+        [LuaFunction("PrintLuaTable", "PrintLuaTable", new string[] { "table", "keyToHighlight" })]
         public void PrintLuaTable(object table, object keyToHighlight)
         {
             var res = table as LuaTable;
             foreach (var key in res.Keys)
             {
-                if (keyToHighlight != null && (int)keyToHighlight == (int)key)
+                if (keyToHighlight != null && (long)keyToHighlight == (long)key)
                 {
                     Console.BackgroundColor = ConsoleColor.Red;
                     Console.WriteLine(res[key]);
@@ -142,7 +174,7 @@ namespace MainNamespace.LuaUtil
             }
         }
 
-        [LuaFunction("CleareConsole", "Cleare console")]
+        [LuaFunction("CleareConsole", "Cleare console")]    
         public void CleareConsole()
         {
             Console.Clear();

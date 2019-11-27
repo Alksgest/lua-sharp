@@ -6,7 +6,10 @@
         "GetFiles",
         "HandleKeyPress",
         "PrintLuaTable",
-        "CleareConsole"
+        "CleareConsole",
+        "CheckIsPathPresentFile",
+        "RunFile",
+        "GetParentFolder"
     ],
     "Lua.diagnostics.disable": [
         "trailing-space"
